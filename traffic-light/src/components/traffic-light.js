@@ -4,10 +4,9 @@ import classNames from 'classnames';
 
 class TrafficLight extends Component {
     render() {
-        console.log(this.props);
         const { currentColor } = this.props;
         return (
-            < div className="TrafficLight" >
+            <div className="TrafficLight" >
                 <div className={
                     classNames('bulb', 'red', {
                         active: currentColor === "RED"
@@ -23,7 +22,7 @@ class TrafficLight extends Component {
                         active: currentColor === "GREEN"
                     })
                 }></div>
-            </div >
+            </div>
         );
     }
 }

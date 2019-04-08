@@ -6,46 +6,54 @@ import TodoItem from './components/TodoItem'
 class App extends Component {
     constructor() {
         super()
-        this.TodoItems = [
-            { title: 'Go shopping', isComplete: true },
-            { title: 'Go swimming', isComplete: false },
-            { title: 'Go home', isComplete: false }
-        ]
+        this.state = {
+            TodoItems: [
+                { title: 'Go shopping', isComplete: true },
+                { title: 'Go swimming', isComplete: false },
+                { title: 'Go home', isComplete: false }
+            ]
+        }
     }
 
-    // Option 2:
+    onItemClick(item) {
+        return () => {
+            console.log(item);
+            const isComplete = item.isComplete;
+            const { TodoItems } = this.state;
+            const index = TodoItems.indexOf(item);
+            this.setState({
+                TodoItems: [
+                    ...TodoItems.slice(0, index),
+                    {
+                        ...item,
+                        isComplete: !isComplete
+                    },
+                    ...TodoItems.slice(index + 1)
+                ]
+            });
+        }
+    }
+
     render() {
-        return (
-            <div className='App'>
-                {this.TodoItems.length > 0 && this.TodoItems.map((item, index) => (
-                    <TodoItem key={index} item={item} />
-                ))}
-                {
-                    this.TodoItems.length === 0 && "Nothing Here!"
-                }
-            </div>
-        );
-    }
-
-    // Option 2:
-    /* render() {
-        if (this.Items.length > 0) {
+        if (this.state.TodoItems.length) {
+            return (
+                < div className='App' >
+                    {this.state.TodoItems.map((item, index) =>
+                        <TodoItem
+                            key={index}
+                            item={item}
+                            onClick={this.onItemClick(item)} />
+                    )}
+                </div >
+            )
+        } else {
             return (
                 <div className='App'>
-                    {this.Items.map((item, index) => (
-                        <TodoItem key={index} item={item} />
-                    ))}
+                    {this.TodoItems.length === 0 && "Nothing Here!"}
                 </div>
-            );
-                    {this.Items.map((item, index) => (
-                        <TodoItem key={index} item={item} />
-                    ))}
-                </div>
-            );
-        } else {
-            return (<div className='App'>Nothings Here.</div>)
+            )
         }
-    }*/
+    }
 }
 
 export default App
