@@ -4,6 +4,7 @@ import './App.css';
 import TodoItem from './components/TodoItem';
 import ImgTick from './components/ImgTick';
 import Input from './components/Input';
+import Footer from './components/Footer';
 
 class App extends Component {
   constructor() {
@@ -73,6 +74,9 @@ class App extends Component {
   }
 
   render() {
+    let countItemSelected = this.state.todoItem.reduce((accum, item) =>
+      item.isComplete ? accum : accum + 1
+      , 0);
     return (
       <div className="App">
         <div className="container">
@@ -81,9 +85,9 @@ class App extends Component {
           </div>
         </div>
         <div className="container d-flex justify-content-center">
-          <div className="col-4 border">
+          <div className="col-6 border">
             <div className="input border-bottom py-2">
-              <ImgTick ImgTick={this.state.ImgTick} onClick={this.onClickTickAll} />
+              <ImgTick ImgTick={this.state.ImgTick} onClick={this.onClickTickAll} countItemSelected={countItemSelected} />
               <Input onKeyUp={this.onKeyUp} value={this.state.newItem} onChange={this.onChange} />
             </div>
             <div className="TodoItems mt-2">
@@ -94,6 +98,7 @@ class App extends Component {
                   todoItem={item} />
               )}
             </div>
+            <Footer countItemSelected={countItemSelected} />
           </div>
         </div>
       </div>

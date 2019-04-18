@@ -5,4 +5,9 @@
 
 .line-thought {
     text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.selected {
+    border-color: rgba(175, 47, 47, 0.2);
 }

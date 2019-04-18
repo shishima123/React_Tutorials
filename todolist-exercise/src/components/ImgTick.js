@@ -4,9 +4,9 @@ import unTick from '../img/untick.png'
 
 class ImgTick extends Component {
     render() {
-        const { onClick, ImgTick } = this.props;
+        const { onClick, ImgTick, countItemSelected } = this.props;
         let imgSrc = tick;
-        if (ImgTick) {
+        if (ImgTick || countItemSelected === 0) {
             imgSrc = unTick;
         }
         return (
