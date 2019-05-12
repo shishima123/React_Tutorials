@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+</head>
+
+<body style="background-color: #E0E0E0">
+    <div class="container-fluid d-flex align-items-center justify-content-center"
+        style="height: 15vh;background-color: #2196f3;">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-light">Tool Convert For Batch WO-BO</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center"">
+            <div class=" col-5">
+            <div class="form-group">
+                <label for="txtAreaBefore" class="font-weight-bold h4">Input:</label>
+                <textarea class="form-control" rows="15" id="txtAreaBefore"
+                    style="white-space: nowrap;  overflow: auto;"></textarea>
+            </div>
+        </div>
+
+        <div class="col-1 d-flex justify-content-center mt-5">
+            <div class="text-center">
+                <button id="btnConvert" class='btn btn-primary'>
+                    Convert
+                </button>
+                <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" id="chkSpace">
+                    <label class="custom-control-label" for="chkSpace">Space</label>
+                </div>
+                <div class="text-start">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="declare" name="rdoFeature" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="declare">Declare</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="substr" name="rdoFeature" class="custom-control-input">
+                        <label class="custom-control-label" for="substr">SubString</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-5">
+            <div class="form-group">
+                <label for="txtAreaAfter" class="font-weight-bold h4">Output:</label>
+                <textarea class="form-control" rows="15" id="txtAreaAfter" wrap="soft"
+                    style="white-space: nowrap;  overflow: auto;"></textarea>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        $(function () {
+            var txtAfterConvert = '';
+            $('#btnConvert').click(function () {
+                var text = $('#txtAreaBefore').val();
+                if (text != '') {
+                    let feature = $("input[name='rdoFeature']:checked").next().text();
+                    switch (feature) {
+                        case "SubString":
+                            alert('SubString')
+                            break;
+                        default:
+                            txtAfterConvert = declare(text);
+                    }
+                    $('#txtAreaAfter').text(txtAfterConvert);
+                    $('#txtAreaAfter').select();
+                    document.execCommand("copy");
+                    $.notify("Copyed to clipboard", "success ");
+                } else {
+                    $.notify("Please enter input", "error ");
+                }
+            });
+
+            var declare = (text) => {
+                var splitLines = text.match(/^.*((\r\n|\n|\r)|$)/gm);
+                var lineAfterRemoveTab;
+                var strToArray;
+                var lineAfterConvert;
+                let txtAfterConvert = '';
+                for (var i in splitLines) {
+                    lineAfterRemoveTab = splitLines[i].trim().replace(/\t|\t\t/g, ' ').replace(
+                        /\s\s+/g,
+                        ' ');
+                    strToArray = lineAfterRemoveTab.split(' ');
+                    if ($('#chkSpace').is(":checked")) {
+                        var physicNm = nullToSpace(strToArray[0]) + nullToSpace(strToArray[1]);
+                        var logicNm = nullToSpace(strToArray[2]);
+                        var type = nullToSpace(strToArray[3]);
+                        var len = nullToSpace(strToArray[4]);
+                    } else {
+                        var physicNm = nullToSpace(strToArray[0]);
+                        var logicNm = nullToSpace(strToArray[1]);
+                        var type = nullToSpace(strToArray[2]);
+                        var len = nullToSpace(strToArray[3]);
+                    }
+
+                    if (logicNm != '') {
+                        let space1 = '                    '.slice(logicNm.length);
+                        let space2 = '     '.slice(len.length);
+                        let endLine;
+                        i == splitLines.length - 2 ? endLine = ';' : endLine = ',';
+                        lineAfterConvert =
+                            `${logicNm.slice(2)} ${space1} ${type}(${len})${endLine} ${space2}-- ${physicNm}`;
+                        txtAfterConvert += lineAfterConvert + '\n';
+                    }
+                }
+                return txtAfterConvert;
+            }
+
+            var nullToSpace = (str) => {
+                if (str == null || str == undefined) {
+                    return '';
+                } else {
+                    return str;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

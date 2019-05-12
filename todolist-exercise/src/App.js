@@ -15,15 +15,22 @@ class App extends Component {
         { 'name': "Study React", 'isComplete': false },
         { 'name': "Do workout ", 'isComplete': true }
       ],
-      ImgTick: false
+      ImgTick: false,
+      sortItem: [
+        { 'type': 'All', isActive: true },
+        { 'type': 'Active', isActive: false },
+        { 'type': 'Complete', isActive: false }
+      ]
     }
-    this.onClicked = this.onClicked.bind(this);
+    this.onClickDone = this.onClickDone.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onClickTickAll = this.onClickTickAll.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickSortBy = this.onClickSortBy.bind(this);
   }
 
-  onClicked(item) {
+  onClickDone(item) {
     return () => {
       const isComplete = item.isComplete;
       const { todoItem } = this.state;
@@ -36,7 +43,7 @@ class App extends Component {
           },
           ...todoItem.slice(index + 1)
         ]
-      })
+      });
     };
   }
 
@@ -73,6 +80,33 @@ class App extends Component {
     });
   }
 
+  onClickDelete(item) {
+    return () => this.setState({
+      todoItem: this.state.todoItem.filter((i) => i !== item)
+    });
+  }
+
+  onClickSortBy(item) {
+    // let txtTarget = e.currentTarget.textContent;
+    // this.setState({
+    //   sortItem: txtTarget
+    // })
+    return () => {
+      const isActive = item.isActive;
+      const { sortItem } = this.state;
+      const index = sortItem.indexOf(item);
+      this.setState({
+        sortItem: [
+          ...sortItem.slice(0, index),
+          {
+            ...item, isActive: !isActive
+          },
+          ...sortItem.slice(index + 1)
+        ]
+      });
+    }
+  }
+
   render() {
     let countItemSelected = this.state.todoItem.reduce((accum, item) =>
       item.isComplete ? accum : accum + 1
@@ -93,12 +127,28 @@ class App extends Component {
             <div className="TodoItems mt-2">
               {this.state.todoItem.map((item, index) =>
                 <TodoItem
-                  onClick={this.onClicked(item)}
+                  onClickDone={this.onClickDone(item)}
                   key={index}
-                  todoItem={item} />
+                  todoItem={item}
+                  onClickDelete={this.onClickDelete(item)}
+                  sortItem={this.state.sortItem}
+                />
               )}
             </div>
-            <Footer countItemSelected={countItemSelected} />
+            <div className="Footer d-flex border-top">
+              <ul className="nav nav-pills nav-fill">
+                <li className="nav-item">
+                  <p className="nav-link small">{countItemSelected} Item Left</p>
+                </li>
+                {this.state.sortItem.map((item, index) =>
+                  <Footer
+                    key={index}
+                    sortItem={item}
+                    onClickSortBy={this.onClickSortBy(item)}
+                  />
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

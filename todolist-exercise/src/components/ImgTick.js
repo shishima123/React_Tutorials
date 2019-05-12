@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import tick from '../img/tick.png';
-import unTick from '../img/untick.png'
+import unTick from '../img/untick.png';
+import './TodoItem.css';
 
 class ImgTick extends Component {
     render() {
@@ -10,7 +11,7 @@ class ImgTick extends Component {
             imgSrc = unTick;
         }
         return (
-            <img src={imgSrc} alt="tick" onClick={onClick} />
+            <img src={imgSrc} className="selected" alt="tick" onClick={onClick} />
         );
     }
 }

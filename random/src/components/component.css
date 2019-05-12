@@ -1,0 +1,9 @@
+.header-height {
+    height: 10vh;
+    color: white;
+}
+
+.sidebar__height {
+    height: 90vh;
+    background-color: #212529;
+}
