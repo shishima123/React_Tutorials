@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-import LeftSideBar from './components/LeftsideBar';
+import LeftSideBar from './components/LeftSideBar';
+import RandomYmd from './components/RandomYmd';
+import RandomString from './components/RandomString';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
   constructor() {
@@ -8,7 +11,7 @@ class App extends Component {
     this.state = {
       feature: [
         { "name": "Random String", "isActive": true, "bgColor": "bg-primary", "textColor": "text-primary" },
-        { "name": "Random Y/M/D", "isActive": false, "bgColor": "bg-success", "textColor": "text-success" }
+        { "name": "Random Ymd", "isActive": false, "bgColor": "bg-success", "textColor": "text-success" }
       ]
     }
     this.onClickFeature = this.onClickFeature.bind(this);
@@ -29,25 +32,34 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header feature={this.state.feature} />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-2 sidebar__height">
-              <ul className="nav flex-column">
-                {this.state.feature.map((item, index) =>
-                  <LeftSideBar
-                    feature={item}
-                    key={index}
-                    onClickFeature={this.onClickFeature(item)}
-                  />
-                )}
-              </ul>
+      <Router>
+        <div className="App">
+          {
+            this.state.feature.filter((item) => item.isActive === true).map((item, index) => <Header feature={item} key={index} />)
+          }
+
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-2 sidebar__height px-0">
+                <ul className="nav flex-column">
+                  {this.state.feature.map((item, index) =>
+                    <LeftSideBar
+                      feature={item}
+                      key={index}
+                      onClickFeature={this.onClickFeature(item)}
+                    />
+                  )}
+                </ul>
+              </div>
+              <div className="col-10 mt-5">
+                <Route path="/RandomYmd" component={RandomYmd} />
+                <Route path="/RandomString" component={RandomString} />
+              </div>
             </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </Router>
     )
   }
 }

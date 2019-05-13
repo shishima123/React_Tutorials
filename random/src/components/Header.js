@@ -4,15 +4,8 @@ import "./component.css";
 class Header extends Component {
     render() {
         const { feature } = this.props;
-        let className = "container-fluid header-height "
-        let headerName;
-        for (let x in feature) {
-            if (feature[x].isActive === true) {
-                headerName = feature[x].name;
-                className += feature[x].bgColor;
-                break;
-            }
-        }
+        let className = "container-fluid header-height " + feature.bgColor;
+        let headerName = feature.name;
         return (
             <div className={className}>
                 <div className="row w-100 h-100 mx-0">
