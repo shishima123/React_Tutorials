@@ -11,7 +11,7 @@ class ImgTick extends Component {
             imgSrc = unTick;
         }
         return (
-            <img src={imgSrc} className="selected" alt="tick" onClick={onClick} />
+            <img src={imgSrc} alt="tick" onClick={onClick} />
         );
     }
 }

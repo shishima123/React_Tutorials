@@ -87,14 +87,11 @@ class App extends Component {
   }
 
   onClickSortBy(item) {
-    // let txtTarget = e.currentTarget.textContent;
-    // this.setState({
-    //   sortItem: txtTarget
-    // })
     return () => {
       const isActive = item.isActive;
       const { sortItem } = this.state;
       const index = sortItem.indexOf(item);
+      sortItem.map((item) => item.isActive = false)
       this.setState({
         sortItem: [
           ...sortItem.slice(0, index),
@@ -136,9 +133,9 @@ class App extends Component {
               )}
             </div>
             <div className="Footer d-flex border-top">
-              <ul className="nav nav-pills nav-fill">
+              <ul className="nav nav-pills nav-fill my-2">
                 <li className="nav-item">
-                  <p className="nav-link small">{countItemSelected} Item Left</p>
+                  <p className="nav-link m-0">{countItemSelected} Item Left</p>
                 </li>
                 {this.state.sortItem.map((item, index) =>
                   <Footer

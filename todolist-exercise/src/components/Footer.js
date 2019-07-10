@@ -8,6 +8,7 @@ class Footer extends Component {
         if (sortItem.isActive) {
             className += " active";
         }
+
         return (
             <li key={index} className="nav-item" onClick={onClickSortBy}>
                 <a className={className} href="#/All">{sortItem.type}</a>

@@ -8,19 +8,23 @@ class TodoItem extends Component {
     render() {
         const { todoItem, onClickDone, onClickDelete, sortItem } = this.props;
         let urlImg = unCheck;
-        let className = "TodoItem d-flex";
+        let todoItemNameClass = "";
+        let todoItemImgClass = "img-size mr-3 ";
         if (todoItem.isComplete) {
             urlImg = checked;
-            className += " line-thought";
+            todoItemNameClass = "line-thought";
+            todoItemImgClass += "line-thought";
         }
-        console.log(sortItem.type)
-        if (sortItem.type === 'Active') {
+
+        let newSortItem = sortItem.filter((item) => item.isActive === true);
+        let typeSort = newSortItem[0].type;
+        if (typeSort === 'Active') {
             if (todoItem.isComplete === false) {
                 return (
-                    <div className={className}>
-                        <img onClick={onClickDone} src={urlImg} alt={unCheck} className="img-size mr-3" />
+                    <div className="TodoItem d-flex">
+                        <img onClick={onClickDone} src={urlImg} alt={unCheck} className={todoItemImgClass} />
                         <div className="d-flex justify-content-between w-100">
-                            <p>{todoItem.name}</p>
+                            <p className={todoItemNameClass}>{todoItem.name}</p>
                             <img onClick={onClickDelete} src={unTick} alt={unCheck} className="img-size mr-3 no-opacity" />
                         </div>
                     </div>
@@ -28,13 +32,13 @@ class TodoItem extends Component {
             } else {
                 return (null);
             }
-        } else if (sortItem.type === 'Complete') {
+        } else if (typeSort === 'Complete') {
             if (todoItem.isComplete === true) {
                 return (
-                    <div className={className}>
-                        <img onClick={onClickDone} src={urlImg} alt={unCheck} className="img-size mr-3" />
+                    <div className="TodoItem d-flex">
+                        <img onClick={onClickDone} src={urlImg} alt={unCheck} className={todoItemImgClass} />
                         <div className="d-flex justify-content-between w-100">
-                            <p>{todoItem.name}</p>
+                            <p className={todoItemNameClass}>{todoItem.name}</p>
                             <img onClick={onClickDelete} src={unTick} alt={unCheck} className="img-size mr-3 no-opacity" />
                         </div>
                     </div>
@@ -44,13 +48,13 @@ class TodoItem extends Component {
             }
         } else {
             return (
-                <div className={className}>
-                    <img onClick={onClickDone} src={urlImg} alt={unCheck} className="img-size mr-3" />
+                <div className="TodoItem d-flex" >
+                    <img onClick={onClickDone} src={urlImg} alt={unCheck} className={todoItemImgClass} />
                     <div className="d-flex justify-content-between w-100">
-                        <p>{todoItem.name}</p>
+                        <p className={todoItemNameClass}>{todoItem.name}</p>
                         <img onClick={onClickDelete} src={unTick} alt={unCheck} className="img-size mr-3 no-opacity" />
                     </div>
-                </div>
+                </div >
             );
         }
     }
